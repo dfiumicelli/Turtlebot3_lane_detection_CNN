@@ -16,10 +16,10 @@ def get_training_augmentation():
         
         # Trasformazioni geometriche
         A.HorizontalFlip(p=0.5),
-        A.ShiftScaleRotate(
-            shift_limit=0.0625, 
-            scale_limit=0.1, 
-            rotate_limit=10, 
+        A.Affine(
+            scale=(0.9, 1.1),
+            translate_percent=(0.0625, 0.0625),
+            rotate=(-10, 10),
             p=0.5
         ),
         
@@ -41,17 +41,23 @@ def get_training_augmentation():
         # Blur e rumore (simula condizioni difficili)
         A.OneOf([
             A.GaussianBlur(blur_limit=3, p=1.0),
-            A.GaussNoise(var_limit=(10.0, 50.0), p=1.0),
+            A.GaussNoise(
+                std_range=(0.1, 0.2),  # ✅ Parametro corretto
+                mean_range=(0.0, 0.0),  # ✅ Parametro corretto
+                per_channel=True,  # ✅ Parametro corretto
+                p=1.0
+            )
         ], p=0.3),
         
         # Dropout casuale (simula occlusioni)
         A.CoarseDropout(
-            max_holes=8,
-            max_height=32,
-            max_width=32,
-            fill_value=0,
-            p=0.2
-        ),
+            num_holes_range=(1, 4),  # ✅ Numero di "buchi" (int range)
+            hole_height_range=(0.05, 0.1),  # ✅ Altezza come frazione (0-1)
+            hole_width_range=(0.05, 0.1),  # ✅ Larghezza come frazione (0-1)
+            fill=0,  # ✅ Colore riempimento
+            p=0.3
+        )
+
     ]
     return A.Compose(train_transform)
 
@@ -123,19 +129,30 @@ def get_heavy_augmentation():
         A.OneOf([
             A.GaussianBlur(blur_limit=5, p=1.0),
             A.MotionBlur(blur_limit=5, p=1.0),
-            A.GaussNoise(var_limit=(10.0, 80.0), p=1.0),
+            A.GaussNoise(
+                std_range=(0.1, 0.2),  # ✅ Parametro corretto
+                mean_range=(0.0, 0.0),  # ✅ Parametro corretto
+                per_channel=True,  # ✅ Parametro corretto
+                p=1.0
+            )
+
         ], p=0.4),
-        
+
         # Dropout e occlusioni
         A.CoarseDropout(
-            max_holes=12,
-            max_height=48,
-            max_width=48,
-            fill_value=0,
+            num_holes_range=(1, 4),  # ✅ Numero di "buchi" (int range)
+            hole_height_range=(0.05, 0.1),  # ✅ Altezza come frazione (0-1)
+            hole_width_range=(0.05, 0.1),  # ✅ Larghezza come frazione (0-1)
+            fill=0,  # ✅ Colore riempimento
             p=0.3
         ),
-        
+
+
         # Compressione JPEG (simula immagini di qualità ridotta)
-        A.ImageCompression(quality_lower=80, quality_upper=100, p=0.2),
+        A.ImageCompression(
+            compression_type='jpeg',  # ✅ Tipo: 'jpeg' o 'webp'
+            quality_range=(85, 95),  # ✅ Qualità: 1-100 (range min-max)
+            p=0.2  # ✅ Probabilità: 0-1
+        ),
     ]
     return A.Compose(heavy_transform)

@@ -15,7 +15,7 @@ from augmentation import (
 # ==================== CONFIGURAZIONE ====================
 class Config:
     # ✅ Dataset in una sola cartella (niente train/val split separato)
-    DATA_DIR = '/kaggle/input/tusimple-preprocessed/tusimple_preprocessed/'
+    DATA_DIR = 'C:\\Users\\dfium\\Downloads\\roads_dataset_preprocessed\\tusimple_preprocessed'
     IMAGES_DIR = os.path.join(DATA_DIR, 'training/frames')
     MASKS_DIR = os.path.join(DATA_DIR, 'training/lane-masks')
     
@@ -193,8 +193,8 @@ def train_epoch(model, loader, optimizer, loss_fn, device):
     
     loop = tqdm(loader, desc='Training')
     for images, masks in loop:
-        images = images.to(device)
-        masks = masks.unsqueeze(1).to(device)
+        images = images.to(device).float()
+        masks = masks.unsqueeze(1).to(device).float()
         
         predictions = model(images)
         loss = loss_fn(predictions, masks)
@@ -218,8 +218,8 @@ def validate_epoch(model, loader, loss_fn, device):
     with torch.no_grad():
         loop = tqdm(loader, desc='Validation')
         for images, masks in loop:
-            images = images.to(device)
-            masks = masks.unsqueeze(1).to(device)
+            images = images.to(device).float()
+            masks = masks.unsqueeze(1).to(device).float()
             
             predictions = model(images)
             loss = loss_fn(predictions, masks)
@@ -277,7 +277,6 @@ def main():
         mode='min',
         patience=5,
         factor=0.5,
-        verbose=True
     )
     
     best_iou = 0.0
