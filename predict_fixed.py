@@ -244,7 +244,7 @@ def main():
     MODEL_PATH = 'C:\\Users\\mfiumicelli\\downloads\\test06_nn\\best_unet_molane.pth'
     ENCODER = 'efficientnet-b4'
     ENCODER_WEIGHTS = 'imagenet'
-    TEST_IMAGE = 'C:\\Users\\mfiumicelli\\Downloads\\strada8.jpg'
+    TEST_IMAGE = 'C:\\Users\\mfiumicelli\\Downloads\\strada5.jpg'
     TEST_IMAGES_DIR = 'C:\\Users\\mfiumicelli\\Downloads\\dataset_TuSimple\\tusimple_preprocessed\\test\\frames'
     OUTPUT_DIR = './'
     THRESHOLD = 0.5
