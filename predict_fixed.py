@@ -13,7 +13,7 @@ from albumentations.pytorch import ToTensorV2
 class LanePredictor:
     """Classe per fare predizioni con U-Net addestrato"""
     
-    def __init__(self, model_path, encoder='mobilenet_v2', encoder_weights='imagenet', device=None):
+    def __init__(self, model_path, encoder='efficientnet-b4', encoder_weights='imagenet', device=None):
         """
         Args:
             model_path (str): Path al modello salvato (.pth)
@@ -31,7 +31,7 @@ class LanePredictor:
         self.encoder = encoder
         self.encoder_weights = encoder_weights
         self.model_path = model_path
-        self.input_size = 256  # Dimensione input della rete
+        self.input_size = 512  # Dimensione input della rete
         
         # Crea modello
         self.model = smp.Unet(
@@ -92,7 +92,7 @@ class LanePredictor:
         
         # Applica preprocessing e resize
         sample = self.transform(image=image)
-        image_tensor = sample['image'].unsqueeze(0).to(self.device)
+        image_tensor = sample['image'].unsqueeze(0).to(self.device).float()
         
         # Predizione
         with torch.no_grad():
@@ -241,12 +241,12 @@ def main():
     """Esempio di utilizzo"""
     
     # ==================== CONFIGURAZIONE ====================
-    MODEL_PATH = './models/best_unet.pth'
-    ENCODER = 'mobilenet_v2'
+    MODEL_PATH = 'C:\\Users\\mfiumicelli\\downloads\\test05_nn\\unet_finetuned_molane_weights.pth'
+    ENCODER = 'efficientnet-b4'
     ENCODER_WEIGHTS = 'imagenet'
-    TEST_IMAGE = './test_images/test_001.jpg'
-    TEST_IMAGES_DIR = './test_images'
-    OUTPUT_DIR = './predictions'
+    TEST_IMAGE = 'C:\\Users\\mfiumicelli\\Downloads\\strada9.png'
+    TEST_IMAGES_DIR = 'C:\\Users\\mfiumicelli\\Downloads\\dataset_TuSimple\\tusimple_preprocessed\\test\\frames'
+    OUTPUT_DIR = './'
     THRESHOLD = 0.5
     
     # ==================== CREAZIONE PREDICTOR ====================
@@ -266,7 +266,7 @@ def main():
         predictor.visualize(TEST_IMAGE, threshold=THRESHOLD, save_path=output_path)
     
     # ==================== PREDIZIONE BATCH ====================
-    
+    """
     if os.path.exists(TEST_IMAGES_DIR):
         test_images = [
             os.path.join(TEST_IMAGES_DIR, f)
@@ -281,7 +281,7 @@ def main():
             print(f"⚠️ Nessuna immagine trovata in {TEST_IMAGES_DIR}")
     else:
         print(f"⚠️ Cartella non trovata: {TEST_IMAGES_DIR}")
-
+    """
 
 if __name__ == '__main__':
     main()

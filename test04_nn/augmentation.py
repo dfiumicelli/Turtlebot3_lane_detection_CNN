@@ -11,6 +11,7 @@ def get_training_augmentation():
     """
     train_transform = [
         A.Resize(256, 256),
+        
         A.HorizontalFlip(p=0.5),
         A.Affine(
             scale=(0.9, 1.1),
