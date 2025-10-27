@@ -31,7 +31,7 @@ class LanePredictor:
         self.encoder = encoder
         self.encoder_weights = encoder_weights
         self.model_path = model_path
-        self.input_size = 256  # Dimensione input della rete
+        self.input_size = 200  # Dimensione input della rete
         
         # Crea modello
         self.model = smp.Unet(
@@ -241,7 +241,7 @@ def main():
     """Esempio di utilizzo"""
     
     # ==================== CONFIGURAZIONE ====================
-    MODEL_PATH = 'test03_nn/best_unet.pth'
+    MODEL_PATH = 'test07_nn/best_unet_mobilenet3.pth'
     ENCODER = 'mobilenet_v2'
     ENCODER_WEIGHTS = 'imagenet'
     TEST_IMAGE = 'image.png'
