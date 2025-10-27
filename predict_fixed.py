@@ -13,7 +13,7 @@ from albumentations.pytorch import ToTensorV2
 class LanePredictor:
     """Classe per fare predizioni con U-Net addestrato"""
     
-    def __init__(self, model_path, encoder='efficientnet-b4', encoder_weights='imagenet', device=None):
+    def __init__(self, model_path, encoder='mobilenet_v2', encoder_weights='imagenet', device=None):
         """
         Args:
             model_path (str): Path al modello salvato (.pth)
@@ -31,7 +31,7 @@ class LanePredictor:
         self.encoder = encoder
         self.encoder_weights = encoder_weights
         self.model_path = model_path
-        self.input_size = 512  # Dimensione input della rete
+        self.input_size = 256  # Dimensione input della rete
         
         # Crea modello
         self.model = smp.Unet(
@@ -241,14 +241,14 @@ def main():
     """Esempio di utilizzo"""
     
     # ==================== CONFIGURAZIONE ====================
-    MODEL_PATH = 'C:\\Users\\mfiumicelli\\downloads\\test06_nn\\best_unet_molane.pth'
-    ENCODER = 'efficientnet-b4'
+    MODEL_PATH = 'test03_nn/best_unet.pth'
+    ENCODER = 'mobilenet_v2'
     ENCODER_WEIGHTS = 'imagenet'
-    TEST_IMAGE = 'C:\\Users\\mfiumicelli\\Downloads\\strada5.jpg'
+    TEST_IMAGE = 'image.png'
     TEST_IMAGES_DIR = 'C:\\Users\\mfiumicelli\\Downloads\\dataset_TuSimple\\tusimple_preprocessed\\test\\frames'
     OUTPUT_DIR = './'
     THRESHOLD = 0.5
-    
+    #!!!!!!!Applicare Fisheye sul dataset!!!
     # ==================== CREAZIONE PREDICTOR ====================
     
     predictor = LanePredictor(
