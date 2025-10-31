@@ -169,7 +169,7 @@ def main():
     MODEL_PATH = 'test08_nn/full_model.pth'
     ENCODER = 'mobilenet_v2'
 
-    TEST_IMAGE = 'image.png'
+    TEST_IMAGE = 'C:\\Users\\dfium\\Desktop\\turtlebot_dataset\\test_images\\image_20251031_101825_786.jpg'
     TEST_IMAGES_DIR = './test_images'
 
     OUTPUT_DIR = './predictions'
