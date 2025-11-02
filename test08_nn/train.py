@@ -2,7 +2,6 @@
 # Encoder: MobileNetV2
 
 import os
-import warnings
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
@@ -11,8 +10,6 @@ import segmentation_models_pytorch as smp
 from tqdm import tqdm
 import numpy as np
 
-warnings.filterwarnings('ignore', category=DeprecationWarning)
-warnings.filterwarnings('ignore', message='.*UnsupportedFieldAttributeWarning.*')
 
 from dataset import LaneSegmentationDataset
 from augmentation import (
@@ -87,7 +84,7 @@ class WarmupCosineScheduler:
 # ==================== CONFIGURAZIONE TUSIMPLE ====================
 
 class Config:
-    # 🎯 TUSIMPLE PATHS
+    # TUSIMPLE PATHS
     DATA_DIR = '/kaggle/input/tusimple-preprocessed/tusimple_preprocessed'
     
     # Training set
@@ -102,7 +99,7 @@ class Config:
     TRAIN_RATIO = 0.8
     VAL_RATIO = 0.2
     
-    # ⭐ ENCODER MOBILENETV2
+    # ENCODER MOBILENETV2
     ENCODER = 'mobilenet_v2'
     ENCODER_WEIGHTS = 'imagenet'
     CLASSES = 1
@@ -176,9 +173,9 @@ def create_model(config):
 def create_dataloaders_tusimple(config):
     """Crea train/val dataloaders da TuSimple (train + test)"""
     
-    print("📂 Caricamento dataset TuSimple (train + test)...")
+    print("Caricamento dataset TuSimple (train + test)...")
     
-    # ✅ Carica TRAIN + TEST usando il dataset.py
+    # Carica TRAIN + TEST usando il dataset.py
     full_dataset = LaneSegmentationDataset(
         images_dir=config.TRAIN_IMAGES_DIR,
         masks_dir=config.TRAIN_MASKS_DIR,
@@ -189,12 +186,12 @@ def create_dataloaders_tusimple(config):
     )
     
     total_size = len(full_dataset)
-    print(f"\n✅ Dataset TuSimple caricato: {total_size} immagini totali")
+    print(f"\nDataset TuSimple caricato: {total_size} immagini totali")
     
     train_size = int(config.TRAIN_RATIO * total_size)
     val_size = total_size - train_size
     
-    print(f"\n📊 Split ratio: {config.TRAIN_RATIO*100:.1f}% training / {config.VAL_RATIO*100:.1f}% validation")
+    print(f"\nSplit ratio: {config.TRAIN_RATIO*100:.1f}% training / {config.VAL_RATIO*100:.1f}% validation")
     print(f"   Train samples: {train_size}")
     print(f"   Val samples: {val_size}")
     
@@ -313,25 +310,25 @@ def main():
     
     # Verifica paths
     if not os.path.exists(config.TRAIN_IMAGES_DIR):
-        raise FileNotFoundError(f"❌ Training images not found: {config.TRAIN_IMAGES_DIR}")
+        raise FileNotFoundError(f"Training images not found: {config.TRAIN_IMAGES_DIR}")
     
     if not os.path.exists(config.TRAIN_MASKS_DIR):
-        raise FileNotFoundError(f"❌ Training masks not found: {config.TRAIN_MASKS_DIR}")
+        raise FileNotFoundError(f"Training masks not found: {config.TRAIN_MASKS_DIR}")
     
     if not os.path.exists(config.TEST_IMAGES_DIR):
-        raise FileNotFoundError(f"❌ Test images not found: {config.TEST_IMAGES_DIR}")
+        raise FileNotFoundError(f"Test images not found: {config.TEST_IMAGES_DIR}")
     
     if not os.path.exists(config.TEST_MASKS_DIR):
-        raise FileNotFoundError(f"❌ Test masks not found: {config.TEST_MASKS_DIR}")
+        raise FileNotFoundError(f"Test masks not found: {config.TEST_MASKS_DIR}")
     
     os.makedirs(config.MODEL_DIR, exist_ok=True)
     
     print("="*80)
-    print("🚀 TRAINING U-NET SU TUSIMPLE (Train + Test)")
-    print("🎯 Dataset: TuSimple train + test combined")
-    print("🎯 Encoder: MobileNetV2")
-    print("🎯 Loss: Focal Tversky (gamma=0.75) + Dice")
-    print("⚡ Mixed Precision: Enabled")
+    print("TRAINING U-NET SU TUSIMPLE (Train + Test)")
+    print("Dataset: TuSimple train + test combined")
+    print("Encoder: MobileNetV2")
+    print("Loss: Focal Tversky (gamma=0.75) + Dice")
+    print("Mixed Precision: Enabled")
     print("="*80)
     print(f"Encoder: {config.ENCODER}")
     print(f"Device: {config.DEVICE}")
@@ -386,11 +383,11 @@ def main():
             model, val_loader, loss_fn, config.DEVICE, threshold=best_threshold
         )
         
-        print(f"\n📈 RISULTATI VALIDAZIONE:")
+        print(f"\nRISULTATI VALIDAZIONE:")
         print(f" Train Loss: {train_loss:.4f}")
         print(f" Val Loss: {val_loss:.4f}")
         print(f" ───────────────────────")
-        print(f" 🎯 IoU: {metrics['iou']:.4f}")
+        print(f" IoU: {metrics['iou']:.4f}")
         print(f" F1: {metrics['f1']:.4f}")
         print(f" Dice: {metrics['dice']:.4f}")
         print(f" LR: {current_lr:.6f}")
@@ -402,18 +399,18 @@ def main():
             best_metrics = metrics
             no_improve_count = 0
             torch.save(model.state_dict(), config.BEST_MODEL_PATH)
-            print(f"\n ✅ NUOVO MIGLIOR MODELLO!")
+            print(f"\n NUOVO MIGLIOR MODELLO!")
             print(f" IoU: {best_iou:.4f}")
         else:
             no_improve_count += 1
             if no_improve_count >= patience:
-                print(f"\n⚠️ Early stopping: nessun miglioramento per {patience} epoch")
+                print(f"\n Early stopping: nessun miglioramento per {patience} epoch")
                 break
     
     print("\n" + "="*80)
-    print("✅ TRAINING SU TUSIMPLE COMPLETATO!")
+    print("TRAINING SU TUSIMPLE COMPLETATO!")
     print("="*80)
-    print(f"Best IoU: {best_iou:.4f} 🎯")
+    print(f"Best IoU: {best_iou:.4f} ")
     print(f"Best F1: {best_metrics['f1']:.4f}")
     print(f"Best Dice: {best_metrics['dice']:.4f}")
     print(f"Modello salvato: {config.BEST_MODEL_PATH}")

@@ -3,9 +3,9 @@ import torch
 import segmentation_models_pytorch as smp
 
 # Percorsi (esempio)
-weights_path = 'best_unet_mobilenet1.pth'          # file contenente solo state_dict
-full_ckpt_path = 'full_checkpoint.pth'    # dove salvare checkpoint completo
-full_model_path = 'full_model.pth'        # opzionale: salva l'intero oggetto modello
+weights_path = 'C:\\Users\\mfiumicelli\\PycharmProjects\\Turtlebot3_Perception\\test08_nn\\checkpoints_and_models_v2\\last_unet_finetuned.pth'          # file contenente solo state_dict
+full_ckpt_path = 'full_checkpoint_v3.pth'    # dove salvare checkpoint completo
+full_model_path = 'full_model_v3.pth'        # opzionale: salva l'intero oggetto modello
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 

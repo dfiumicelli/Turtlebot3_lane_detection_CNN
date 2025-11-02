@@ -5,20 +5,16 @@ from albumentations.pytorch import ToTensorV2
 import cv2
 
 def get_training_augmentation_fisheye_heavy():
-    """
-    ✅ AUGMENTATION CORRETTA per ROBOT 640x480
-    Dataset 1280x720 → 640x480 (dimezzato)
-    """
-    
+
     train_transform = [
-        # ⭐ OPTICAL DISTORTION - Parametri CORRETTI
+        #OPTICAL DISTORTION - Parametri CORRETTI
         A.OpticalDistortion(
             distort_limit=1.0,      # Distorsione più forte
             interpolation=cv2.INTER_LINEAR,
             p=0.7                   # 70% probabilità
         ),
         
-        # ⭐ GRID DISTORTION - Parametri CORRETTI
+        #GRID DISTORTION - Parametri CORRETTI
         A.GridDistortion(
             num_steps=5,
             distort_limit=0.5,      # Distorsione più forte
@@ -26,7 +22,7 @@ def get_training_augmentation_fisheye_heavy():
             p=0.5
         ),
         
-        # ⭐ ELASTIC TRANSFORM - Parametri CORRETTI
+        #ELASTIC TRANSFORM - Parametri CORRETTI
         A.ElasticTransform(
             alpha=50,               # Intensità della deformazione
             sigma=5,                # Smoothness della deformazione
@@ -43,7 +39,7 @@ def get_training_augmentation_fisheye_heavy():
         
         # Affine (non ShiftScaleRotate)
         A.Affine(
-            shift_percent=0.1,
+            translate_percent=0.1,
             scale=0.15,
             rotate=15,
             interpolation=cv2.INTER_LINEAR,
@@ -83,7 +79,6 @@ def get_training_augmentation_fisheye_heavy():
             num_holes_range=(1, 8),
             hole_height_range=(8, 32),
             hole_width_range=(8, 32),
-            fill_value=0,           # ← CORRETTO! (non fill)
             p=0.3
         ),
         
@@ -117,11 +112,7 @@ def get_training_augmentation_fisheye_heavy():
 
 
 def get_training_augmentation():
-    """
-    ✅ AUGMENTATION STANDARD (meno aggressiva)
-    Dataset 1280x720 → 640x480
-    """
-    
+
     train_transform = [
         # Fisheye distortion moderato
         A.OpticalDistortion(
@@ -152,7 +143,7 @@ def get_training_augmentation():
         
         # Affine
         A.Affine(
-            shift_percent=0.1,
+            translate_percent=0.1,
             scale=0.15,
             rotate=15,
             interpolation=cv2.INTER_LINEAR,
@@ -192,7 +183,6 @@ def get_training_augmentation():
             num_holes_range=(1, 8),
             hole_height_range=(8, 32),
             hole_width_range=(8, 32),
-            fill_value=0,           # ← CORRETTO!
             p=0.3
         ),
         
@@ -210,9 +200,6 @@ def get_training_augmentation():
 
 
 def get_validation_augmentation():
-    """
-    Validation augmentation - solo normalizzazione
-    """
     
     val_transform = [
         A.Normalize(
