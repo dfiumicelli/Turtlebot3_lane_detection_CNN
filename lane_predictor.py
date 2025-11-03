@@ -247,8 +247,8 @@ def main():
     MODEL_PATH = 'test08_nn/checkpoints_and_models_v2/last_unet_finetuned.pth'
     ENCODER = 'mobilenet_v2'
 
-    TEST_IMAGE = 'C:\\Users\\mfiumicelli\\Documents\\turtlebot_dataset\\test_images\\image_20251031_103508_985.jpg'
-    TEST_IMAGES_DIR = 'C:\\Users\\mfiumicelli\\Documents\\turtlebot_dataset\\test_images'
+    TEST_IMAGE = '/home/dfiumicelli/Documenti/turtlebot_dataset/test_images/image_20251031_103508_985.jpg'
+    TEST_IMAGES_DIR = '/home/dfiumicelli/Documenti/turtlebot_dataset/test_images'
 
     OUTPUT_DIR = './predictions'
     THRESHOLD = 0.5

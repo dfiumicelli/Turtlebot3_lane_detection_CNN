@@ -159,7 +159,7 @@ if __name__ == "__main__":
         print("=" * 70)
         print("✓ MODELLO ONNX PRONTO PER IL TURTLEBOT")
         print("=" * 70)
-        print(f"\nUsare nel nodo ROS2: unet_mobilenet_consolidated.onnx\n")
+        print(f"\nUsare nel nodo ROS2: full_model_v3.onnx\n")
         print(f"Codice ROS2:\n")
         print("""
 import onnxruntime as ort
@@ -167,7 +167,7 @@ import numpy as np
 
 sess_options = ort.SessionOptions()
 sess_options.intra_op_num_threads = 4
-session = ort.InferenceSession('unet_mobilenet_consolidated.onnx', sess_options)
+session = ort.InferenceSession('full_model_v3.onnx', sess_options)
 
 # Inference
 output = session.run(None, {'input': image_tensor})

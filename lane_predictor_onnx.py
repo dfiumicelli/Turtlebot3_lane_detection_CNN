@@ -371,8 +371,8 @@ if __name__ == '__main__':
     
     # Configurazione
     PYTORCH_MODEL = 'test08_nn/checkpoints_and_models_v2/last_unet_finetuned.pth'
-    ONNX_MODEL = 'unet_mobilenet_int8_working_consolidated.onnx'
-    TEST_IMAGE = 'C:\\Users\\mfiumicelli\\Documents\\turtlebot_dataset\\test_images\\image_20251031_103508_985.jpg'  # Cambia con il tuo percorso
+    ONNX_MODEL = 'full_model_v3.onnx'
+    TEST_IMAGE = '/home/dfiumicelli/Documenti/turtlebot_dataset/test_images/image_20251031_103508_985.jpg'  # Cambia con il tuo percorso
     THRESHOLD = 0.5
     
     # ========== TEST PYTORCH ==========
